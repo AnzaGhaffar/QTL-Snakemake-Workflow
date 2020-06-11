@@ -1,0 +1,22 @@
+vcffilter:
+  filters:
+   -i "GT[0]='0/0' && GT[1]='1/1' || GT[0]='1/1' && GT[1]='0/0'"
+   
+vcf_file: pools_filtered_removedjunk
+
+QTL_Parser:
+   VCF_File_Name_or_Path: Homozygous_Filtered_VCF/Homozygous_pools_filtered_removedjunk.vcf.gz
+   Number_of_Chromosomes: 12
+   HighBulk: rice_pools_res
+   LowBulk: rice_pools_sus
+   WindowSize: 1000000
+   High_Bulk_Size: 178
+   Low_Bulk_Size: 280
+   REF_Allel_Frequency: 0.20
+   Min_Total_Depth: 20
+   Max_Total_Depth: 100
+   Depth_Difference: 80
+   Min_Sample_Depth: 20
+   Min_GQ: 80
+   Filter_Threshold: 0.1
+   FDR_q: 0.01
