@@ -7,8 +7,24 @@ QTL-Snakemake-Workflow
 .. image:: https://img.shields.io/conda/dn/bioconda/snakemake.svg?label=Bioconda
     :target: https://bioconda.github.io/recipes/snakemake/README.html
 
+.. image:: https://img.shields.io/pypi/pyversions/snakemake.svg
+    :target: https://www.python.org
+
+.. image:: https://img.shields.io/pypi/v/snakemake.svg
+    :target: https://pypi.python.org/pypi/snakemake
+
+.. image:: https://img.shields.io/docker/cloud/build/snakemake/snakemake
+       :target: https://hub.docker.com/r/snakemake/snakemake
+
+.. image:: https://github.com/snakemake/snakemake/workflows/CI/badge.svg?branch=master
+    :target: https://github.com/snakemake/snakemake/actions?query=branch%3Amaster+workflow%3ACI
+
 .. image:: https://img.shields.io/badge/stack-overflow-orange.svg
     :target: https://stackoverflow.com/questions/tagged/snakemake
+
+.. image:: https://img.shields.io/twitter/follow/johanneskoester.svg?style=social&label=Follow
+    :target: https://twitter.com/search?l=&q=%23snakemake%20from%3Ajohanneskoester
+
 
 .. .. raw:: html
           <span class="__dimensions_badge_embed__" data-doi="https://doi.org/10.1093/bioinformatics/bts480" data-legend="always" data-style="large_rectangle"></span><script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
