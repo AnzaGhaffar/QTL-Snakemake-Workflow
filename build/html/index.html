@@ -33,8 +33,101 @@
   <div class="section" id="qtl-snakemake-workflow">
 <span id="manual-main"></span><h1>QTL-Snakemake-Workflow<a class="headerlink" href="#qtl-snakemake-workflow" title="Permalink to this headline">¶</a></h1>
 <a class="reference external image-reference" href="https://bioconda.github.io/recipes/snakemake/README.html"><img alt="https://img.shields.io/conda/dn/bioconda/snakemake.svg?label=Bioconda" src="https://img.shields.io/conda/dn/bioconda/snakemake.svg?label=Bioconda" /></a>
+<a class="reference external image-reference" href="https://stackoverflow.com/questions/tagged/snakemake"><img alt="https://img.shields.io/badge/stack-overflow-orange.svg" src="https://img.shields.io/badge/stack-overflow-orange.svg" /></a>
 <p>The QTL-Snakemake-Workflow consists of 3 main fuctions which helps to utilize
-the QTLseqr tool for Next Generation sequencing bulk segregant analysis.</p>
+the QTLseqr tool for Next Generation sequencing bulk segregant analysis from
+a VCF file.</p>
+<div class="section" id="getting-started">
+<span id="main-getting-started"></span><h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>To run this package first we need to install the required libraries for the workflow which can be installed by running</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">env</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span> <span class="n">QTL_Test</span> <span class="o">--</span><span class="n">file</span> <span class="n">condaenv</span><span class="o">.</span><span class="n">yml</span>
+</pre></div>
+</div>
+<p>Here we can define any name we want instead of the QTL_Test. This command will make a conda environment to run this package.</p>
+<p>Once we have created the environment we need to configure the <strong>config.yaml</strong> file with the required parameters so that it can take input
+for different rules. After this to run the workflow we can use the command</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">snakemake</span> <span class="o">-</span><span class="n">pr</span>
+</pre></div>
+</div>
+<p>This command will run the workflow and generate the <strong>output</strong> in the <strong>QTL_Plots</strong> folder.</p>
+</div>
+<div class="section" id="work-flow-rules">
+<span id="manual-work-flow-rules"></span><h2>Work FLow Rules<a class="headerlink" href="#work-flow-rules" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>The QTL workflow consists of three rules:</dt><dd><ol class="arabic simple">
+<li><p>VCF_Homozygous_Filtering</p></li>
+<li><p>QTL_VCF_to_Table_Parser</p></li>
+<li><p>QTL_Plotting</p></li>
+</ol>
+</dd>
+</dl>
+<ol class="arabic simple">
+<li><p>VCF_Homozygous_Filtering</p></li>
+</ol>
+<p>This rule takes any vcf file and filters the parent for selecting only the homozygous SNPS in the vcf file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="p">:</span>
+    <span class="n">expand</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{vcf_file_name}</span><span class="s2">.vcf.gz&quot;</span><span class="p">,</span> <span class="n">vcf_file_name</span><span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;vcf_file&quot;</span><span class="p">]),</span>
+<span class="n">output</span><span class="p">:</span>
+    <span class="n">expand</span><span class="p">(</span><span class="s2">&quot;Homozygous_Filtered_VCF/Homozygous_</span><span class="si">{vcf_file_name}</span><span class="s2">.vcf.gz&quot;</span><span class="p">,</span> <span class="n">vcf_file_name</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;vcf_file&quot;</span><span class="p">])</span>
+<span class="n">params</span><span class="p">:</span>
+    <span class="n">filter_data</span><span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;vcffilter&quot;</span><span class="p">][</span><span class="s2">&quot;filters&quot;</span><span class="p">]</span>
+<span class="n">shell</span><span class="p">:</span>
+    <span class="s2">&quot;( bcftools view&quot;</span>
+    <span class="s2">&quot;   </span><span class="si">{params.filter_data}</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;   </span><span class="si">{input}</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;   -O z&quot;</span>
+    <span class="s2">&quot;   -o </span><span class="si">{output}</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;)&quot;</span>
+</pre></div>
+</div>
+<p>The <strong>input</strong> is a vcf file which needs to be defined in the config file under the <strong>vcf_file</strong> name and the <strong>output</strong>
+of this rule will be saved into the <strong>Homozygous_Filtered_VCF</strong> folder with the same vcf file name just a <strong>Homozygous</strong>
+title will be added in the start of the name so that we can distinguish between different files if the workflow is run
+for multiple vcf files. The filtering is done on the parents and the shell command takes input from the config file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">i</span> <span class="s2">&quot;GT[0]=&#39;0/0&#39; &amp;&amp; GT[1]=&#39;1/1&#39; || GT[0]=&#39;1/1&#39; &amp;&amp; GT[1]=&#39;0/0&#39;&quot;</span>
+</pre></div>
+</div>
+<p>In the above script for filtering the parents which comes from the config file it is taking the parents and from our reference
+vcf file the parents are on <strong>GT[0]</strong> and <strong>GT[1]</strong>, but it should be adjusted according to the given vcf file.</p>
+<ol class="arabic simple" start="2">
+<li><p>QTL_VCF_to_Table_Parser</p></li>
+</ol>
+<p>This rule is for converting a vcf file into a table format file which is required by the QTL tool if the VCF file is not generated
+from <strong>GATK</strong>. This rule runs a R scripts which parses the vcf file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="p">:</span>
+    <span class="n">expand</span><span class="p">(</span><span class="s2">&quot;Homozygous_Filtered_VCF/Homozygous_</span><span class="si">{vcf_file_name}</span><span class="s2">.vcf.gz&quot;</span><span class="p">,</span> <span class="n">vcf_file_name</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;vcf_file&quot;</span><span class="p">]),</span>
+<span class="n">output</span><span class="p">:</span>
+    <span class="s2">&quot;QTL_VCF_to_Table/QTL_Table.csv&quot;</span><span class="p">,</span>
+<span class="n">script</span><span class="p">:</span>
+    <span class="s2">&quot;Scripts/QTL_Parser.R&quot;</span>
+</pre></div>
+</div>
+<p>It takes an <strong>input</strong> a vcf file from the <strong>Homozygous_Filtered_VCF</strong> folder with a specified name as <strong>Homozygous_{vcf_file_name}.vcf.gz</strong>
+the <strong>vcf_file_name</strong> comes from the config file where the name of the vf file was given. The <strong>output</strong> is saved in <strong>QTL_VCF_to_Table</strong> folder
+The <strong>QTL_VCF_to_Table</strong> script takes input from the config file where the names of the <strong>High Bulk, Low Bulk</strong> are defined along with that it also
+takes the parameter <strong>Number_of_Chromosomes</strong> from the config file.</p>
+<ol class="arabic simple" start="3">
+<li><p>QTL_Plotting</p></li>
+</ol>
+<p>This rule runs the QTLseqr tool and generates the plots for <strong>Gprime Analysis</strong> and <strong>QTLseq Analysis</strong>. This rules runs an R script for generating the plots.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="p">:</span>
+   <span class="s2">&quot;QTL_VCF_to_Table/QTL_Table.csv&quot;</span>
+<span class="n">output</span><span class="p">:</span>
+   <span class="s2">&quot;QTL_Plots/DP_Filtering Data.pdf&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;QTL_Plots/REF Frequency for Filtering Data.pdf&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;QTL_Plots/SNP Index for Filtering Data.pdf&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;QTL_Plots/GPrime Distribution with Hampel Outlier Filter.pdf&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;QTL_Plots/GPrime Distribution with deltaSNP Outlier Filter.pdf&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;QTL_Plots/SNP Density Plot.pdf&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;QTL_Plots/Delta SNP Index Plot with Intervals.pdf&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;QTL_Plots/GPrime Value Plot.pdf&quot;</span>
+<span class="n">script</span><span class="p">:</span>
+    <span class="s2">&quot;Scripts/QTL_Plotting.R&quot;</span>
+</pre></div>
+</div>
+<p>It takes <strong>input</strong> the csv file developed by the <strong>QTL_VCF_to_Table_Parser</strong> along with the parameters defined within the config file for filtering the SNPs
+for better results and the <strong>output</strong> is saved into <strong>QTL_Plots</strong> folder.</p>
+</div>
 </div>
 
 
