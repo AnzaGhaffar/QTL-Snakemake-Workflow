@@ -51,6 +51,7 @@ exclude_patterns = []
 #
 html_theme = 'sphinx_rtd_theme'
 RTD_NEW_THEME = True
+pygments_style = 'sphinx'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
