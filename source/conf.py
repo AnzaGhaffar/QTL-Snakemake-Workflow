@@ -24,6 +24,7 @@ author = 'Anza Ghaffar'
 # The full version, including alpha/beta/rc tags
 release = 'V1'
 # added by anza for resolving the error of content.rst not found
+html_theme = 'sphinx_rtd_theme'
 master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------
