@@ -24,7 +24,7 @@ author = 'Anza Ghaffar'
 # The full version, including alpha/beta/rc tags
 release = 'V1'
 # added by anza for resolving the error of content.rst not found
-html_theme = 'sphinx_rtd_theme'
+
 master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------
@@ -49,7 +49,7 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
