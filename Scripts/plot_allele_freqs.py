@@ -5,7 +5,8 @@
 
 
 import os
-#import matplotlib
+import matplotlib
+#%matplotlib inline
 #get_ipython().run_line_magic('matplotlib', 'inline')
 from pathlib import Path
 import pandas as pd
@@ -61,17 +62,26 @@ pd.options.display.max_rows = 60 # default is 60
 # #### File paths
 
 # In[5]:
+
 # Added by Anza to get the name of the file from the config file
 
-config = yaml.load(open('config.yaml'),Loader=yaml.FullLoader)
+config = yaml.load(open('config.yaml'))
 vcf_file_name=config['AllelPlots']['vcffile']
+#vcf_file_name=vcf_file_name.replace('.','_')
 print(vcf_file_name)
 tsv_file= "Allel_Frequency_Plots_Computomics/"+vcf_file_name+".tsv"
+raw_output="Allel_Frequency_Plots_Computomics/"+vcf_file_name+".pdf"
+raw_output_window="Allel_Frequency_Plots_Computomics/"+vcf_file_name+"_window.pdf"
 # Define input table paths
 tsv_file = Path(tsv_file)
 print(tsv_file)
-raw_output_pdf = Path('Allel_Frequency_Plots_Computomics/freebayes_allele_freq_D2.pdf')
-window_output_pdf = Path('Allel_Frequency_Plots_Computomics/freebayes_allele_freq_window_D2.pdf')
+raw_output_pdf = Path(raw_output)
+window_output_pdf = Path(raw_output_window)
+
+# Define input table paths
+#tsv_file = Path('freebayes_D2.filtered.tsv')
+#raw_output_pdf = Path('freebayes_allele_freq_D2.pdf')
+#window_output_pdf = Path('freebayes_allele_freq_window_D2.pdf')
 
 #tsv_file = Path('freebayes_D3.filtered.tsv')
 # raw_output_pdf = Path('freebayes_allele_freq_D3.pdf')
@@ -288,8 +298,7 @@ table = getTidyTable(raw_table, samples)
 
 # Plot raw mutant allele frequencies of F2 pools
 plot_table = table[(table['sample'] == sample_F2_mutant) | (table['sample'] == sample_F2_WT)]
-plot = sns.relplot(data=plot_table, x='POS', y='mutant_freq', row='CHROM', style='sample',
-                   hue='sample', aspect=7.0, height=4., kind='line', markers=True, dashes=False, linewidth=0.5)
+plot = sns.relplot(data=plot_table, x='POS', y='mutant_freq', row='CHROM', style='sample',hue='sample', aspect=7.0, height=4., kind='line', markers=True, dashes=False, linewidth=0.5)
 
 
 # In[11]:

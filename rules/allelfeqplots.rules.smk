@@ -3,15 +3,17 @@ configfile: "config.yaml"
 rule computomics:
     input:
        expand("Allel_Frequency_Plots_Computomics/{vcf_file_name}.tsv", vcf_file_name=config["AllelPlots"]["vcffile"]),
-       "Allel_Frequency_Plots_Computomics/freebayes_allele_freq_D2.pdf",
-       "Allel_Frequency_Plots_Computomics/freebayes_allele_freq_window_D2.pdf"
+       expand("Allel_Frequency_Plots_Computomics/{vcf_file_name}.pdf", vcf_file_name=config["AllelPlots"]["vcffile"]),
+       expand("Allel_Frequency_Plots_Computomics/{vcf_file_name}_window.pdf", vcf_file_name=config["AllelPlots"]["vcffile"])
+#       "Allel_Frequency_Plots_Computomics/freebayes_allele_freq_D2.pdf",
+#       "Allel_Frequency_Plots_Computomics/freebayes_allele_freq_window_D2.pdf",
 
 
 
 
 rule Allel_Frequency_Tsv_Generator:
     input:
-        expand("{vcf_file_name}.vcf",vcf_file_name= config["AllelPlots"]["vcffile"])
+        expand("{vcf_file_name}.{ext}",vcf_file_name= config["AllelPlots"]["vcffile"],ext=config["AllelPlots"]["ext"])
     output:
         expand("Allel_Frequency_Plots_Computomics/{vcf_file_name}.tsv", vcf_file_name=config["AllelPlots"]["vcffile"])
     params:
@@ -27,7 +29,9 @@ rule Allel_Plots:
     input:
         expand("Allel_Frequency_Plots_Computomics/{vcf_file_name}.tsv", vcf_file_name=config["AllelPlots"]["vcffile"])
     output:
-        "Allel_Frequency_Plots_Computomics/freebayes_allele_freq_D2.pdf",
-        "Allel_Frequency_Plots_Computomics/freebayes_allele_freq_window_D2.pdf",
+        expand("Allel_Frequency_Plots_Computomics/{vcf_file_name}.pdf", vcf_file_name=config["AllelPlots"]["vcffile"]),
+        expand("Allel_Frequency_Plots_Computomics/{vcf_file_name}_window.pdf", vcf_file_name=config["AllelPlots"]["vcffile"])
+#        "Allel_Frequency_Plots_Computomics/freebayes_allele_freq_D2.pdf",
+#        "Allel_Frequency_Plots_Computomics/freebayes_allele_freq_window_D2.pdf"
     script:
         "../Scripts/plot_allele_freqs.py"

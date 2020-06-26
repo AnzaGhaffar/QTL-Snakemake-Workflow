@@ -1,19 +1,25 @@
-name: QTL_Test
+name: QTL
 
 channels: 
+  - defaults
   - bioconda
   - conda-forge
-  - defaults
   - r
 #  - guibar
 
-dependencies: 
-  - snakemake=4.3.1
-  - bcftools=1.9
+dependencies:
+  - r-base
+  - r-rlang=0.4.6 
+  - python=3.6.7
+#  - snakemake
+  - bcftools
   - r-devtools
   - r-ggplot2
-  - r-vcfr
+  - r-vcfR
   - bioconductor-VariantAnnotation
 #  - r-QTLseqr
   - r-yaml
   - r-data.table
+  - pandas
+  - matplotlib
+  - seaborn

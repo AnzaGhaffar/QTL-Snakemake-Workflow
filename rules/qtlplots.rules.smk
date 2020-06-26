@@ -9,7 +9,7 @@ rule plotting:
        "QTL_Plots/GPrime Distribution with deltaSNP Outlier Filter.pdf",
        "QTL_Plots/SNP Density Plot.pdf",
        "QTL_Plots/Delta SNP Index Plot with Intervals.pdf",
-       "QTL_Plots/GPrime Value Plot.pdf"
+       "QTL_Plots/GPrime Value Plot.pdf",
 
 rule QTL_Plotting:
     input:
@@ -22,6 +22,6 @@ rule QTL_Plotting:
        "QTL_Plots/GPrime Distribution with deltaSNP Outlier Filter.pdf",
        "QTL_Plots/SNP Density Plot.pdf",
        "QTL_Plots/Delta SNP Index Plot with Intervals.pdf",
-       "QTL_Plots/GPrime Value Plot.pdf"
+       "QTL_Plots/GPrime Value Plot.pdf",
     script:
        "../Scripts/QTL_Plotting.R"

@@ -5,7 +5,7 @@ include: "rules/allelfeqplots.rules.smk"
 
 rule all:
     input:
-        #rules.filtering.input,
-        #rules.parser.input,
-        #rules.plotting.input,
+        rules.filtering.input,
+        rules.parser.input,
+        rules.plotting.input,
         rules.computomics.input
