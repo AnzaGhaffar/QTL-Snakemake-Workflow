@@ -38,7 +38,7 @@ To run this package first we need to install the required libraries for the work
 
 .. code-block:: python
     
-    conda env create --name QTL_Test --file condaenv.yml
+    conda env create --file envs/condaenv.yml
 
 Here we can define any name we want instead of the QTL_Test. This command will make a conda environment to run this package.
 
